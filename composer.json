@@ -1,0 +1,55 @@
+{
+    "name": "imanghafoori/eloquent-rating",
+    "description": "5 star rating for eloquent",
+    "keywords": ["laravel", "laravel-eloquent", "laravel5-package", "PHP", "laravel5", "laravel-rating", "laravel-validation", "eloquent-star"],
+    "license": "MIT",
+    "homepage": "https://github.com/imanghafoori1/eloquent-rating",
+    "authors": [
+        {
+            "name": "Iman Ghafoori",
+            "email": "imanghafoori1@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.0.0",
+        "laravel/framework":"~5.1|6.*|7.*|8.*|9.*"
+    },
+    "autoload-dev": {
+        "classmap": ["tests/TestCase.php"]
+    },
+    "require-dev": {
+        "orchestra/testbench": "~3.0",
+        "orchestra/database": "@dev",
+        "mockery/mockery": "^0.9.9"
+    },
+    "autoload": {
+        "psr-4": {
+            "Imanghafoori\\Stars\\": "src"
+        },
+        "files": [
+            "src/helpers.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Imanghafoori\\StarsTests\\": "tests"
+        }
+    },
+	"suggest": {
+        "imanghafoori/laravel-widgetize": "Gives you a better structure and caching opportunity for your web pages.",
+        "imanghafoori/laravel-anypass": " Allows you login with any password in local environment.",
+		"imanghafoori/laravel-masterpass": "You can easily set a master password without code change.",
+        "imanghafoori/laravel-terminator": "Gives you opportunity to refactor your controllers.",
+        "imanghafoori/eloquent-relativity": "Decouple your eloquent models from each other."
+    },
+    "scripts": {
+        "test": "phpunit"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Imanghafoori\\Stars\\EloquentStarsServiceProvider"
+            ]
+        }
+    }
+}
