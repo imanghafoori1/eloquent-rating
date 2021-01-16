@@ -4,24 +4,24 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRatingTable extends Migration
+class CreateStaringTables extends Migration
 {
     public function up()
     {
-        Schema::create('rates', function(Blueprint $table) {
+        Schema::create('stars', function(Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('ratable_id');
-            $table->string('ratable_type', 35);
+            $table->unsignedBigInteger('starable_id');
+            $table->string('starable_type', 35);
             $table->unsignedBigInteger('user_id');
             $table->enum('value', [1, 2, 3, 4, 5]);
             $table->timestamp('created_at');
         });
 
-        Schema::create('rate_stats', function(Blueprint $table) {
+        Schema::create('star_stats', function(Blueprint $table) {
             $table->bigIncrements('id');
 
-            $table->unsignedBigInteger('ratable_id');
-            $table->string('ratable_type', 35);
+            $table->unsignedBigInteger('starable_id');
+            $table->string('starable_type', 35);
 
             $table->decimal('avg_value', 3)->default(0);
             $table->integer('star_count')->default(1);
@@ -37,6 +37,6 @@ class CreateRatingTable extends Migration
     public function down()
     {
         Schema::drop('star_stats');
-        Schema::drop('rate_stats');
+        Schema::drop('stars');
     }
 }
