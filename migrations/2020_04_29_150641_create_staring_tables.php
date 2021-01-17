@@ -24,13 +24,13 @@ class CreateStaringTables extends Migration
             $table->string('starable_type', 35);
 
             $table->decimal('avg_value', 3)->default(0);
-            $table->integer('star_count')->default(1);
+            $table->unsignedInteger('star_count')->default(1);
 
-            $table->integer('five_star_count')->default(1);
-            $table->integer('four_star_count')->default(1);
-            $table->integer('three_star_count')->default(1);
-            $table->integer('two_star_count')->default(1);
-            $table->integer('one_star_count')->default(1);
+            $table->unsignedInteger('five_star_count')->default(0);
+            $table->unsignedInteger('four_star_count')->default(0);
+            $table->unsignedInteger('three_star_count')->default(0);
+            $table->unsignedInteger('two_star_count')->default(0);
+            $table->unsignedInteger('one_star_count')->default(0);
         });
     }
 
