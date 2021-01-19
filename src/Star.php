@@ -7,29 +7,70 @@ use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
-class Star extends Model
+class Star
 {
-    protected $guarded = ['id'];
-
-    public function starable()
+    public static function getStarCount($starable)
     {
-        return $this->morphTo();
+        $where = self::getWhere($starable);
+
+        DB::table('star_stats')
+            ->select('star_count')
+            ->where($where)
+            ->value('star_count');
+    }
+
+    public static function getAvgRating($starable)
+    {
+        $where = self::getWhere($starable);
+
+        DB::table('star_stats')
+            ->select('avg_value')
+            ->where($where)
+            ->value('avg_value');
+    }
+
+    private static function getRatingArray($starCount, $total)
+    {
+        $percent =  (100 * $starCount) / $total;
+
+        return [
+            'count' => $starCount,
+            'percent' => number_format($percent),
+        ];
+    }
+
+    public static function get_ratings($starable)
+    {
+        $where = self::getWhere($starable);
+
+        $star = DB::table('star_stats')->where($where)->first();
+        $total = $star->star_count;
+
+        $ratings = [
+            'rating_count' => $total,
+            'rating_avg' => $star->avg_value,
+            'stats' => [
+                1 => self::getRatingArray($star->one_star_count, $total),
+                2 => self::getRatingArray($star->two_star_count, $total),
+                3 => self::getRatingArray($star->three_star_count, $total),
+                4 => self::getRatingArray($star->four_star_count, $total),
+                5 => self::getRatingArray($star->five_star_count, $total),
+
+            ],
+        ];
+
+        return $ratings;
     }
 
     public static function rate($value, $userId, $starable)
     {
-        $table = $starable->getTable();
-        $id = $starable->getKey();
-
-        $where = [
-            'starable_type' => $table,
-            'starable_id' => $id,
-        ];
+        $where = self::getWhere($starable);
 
         $user = ['user_id' => $userId];
         $rating = ['value' => $value];
 
         $has = DB::table('stars')->where($where + $user)->exists();
+
         DB::beginTransaction();
         if ($has) {
             self::updateStar($where, $user, $rating);
@@ -86,5 +127,13 @@ class Star extends Model
     public static function updateStar($where, $user, $rating)
     {
         DB::table('stars')->where($where + $user)->update($rating);
+    }
+
+    public static function getWhere($starable)
+    {
+        return [
+            'starable_id' => $starable->getKey(),
+            'starable_type' => $starable->getTable(),
+        ];
     }
 }
