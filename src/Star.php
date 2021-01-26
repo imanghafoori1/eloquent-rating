@@ -13,7 +13,7 @@ class Star
     {
         $where = self::getWhere($starable);
 
-        DB::table('star_stats')
+        return self::starStatTable()
             ->select('star_count')
             ->where($where)
             ->value('star_count');
@@ -23,7 +23,7 @@ class Star
     {
         $where = self::getWhere($starable);
 
-        DB::table('star_stats')
+        return self::starStatTable()
             ->select('avg_value')
             ->where($where)
             ->value('avg_value');
@@ -35,31 +35,27 @@ class Star
 
         return [
             'count' => $starCount,
-            'percent' => number_format($percent),
+            'percent' => number_format($percent, config('stars.percent_decimal_count' , 0)),
         ];
     }
 
     public static function get_ratings($starable)
     {
-        $where = self::getWhere($starable);
+        $starStat = self::starStatTable()->where(self::getWhere($starable))->first();
+        $total = $starStat->star_count;
 
-        $star = DB::table('star_stats')->where($where)->first();
-        $total = $star->star_count;
-
-        $ratings = [
-            'rating_count' => $total,
-            'rating_avg' => $star->avg_value,
+        return [
+            'star_count' => $total,
+            'avg' => $starStat->avg_value,
             'stats' => [
-                1 => self::getRatingArray($star->one_star_count, $total),
-                2 => self::getRatingArray($star->two_star_count, $total),
-                3 => self::getRatingArray($star->three_star_count, $total),
-                4 => self::getRatingArray($star->four_star_count, $total),
-                5 => self::getRatingArray($star->five_star_count, $total),
+                '1' => self::getRatingArray($starStat->one_star_count, $total),
+                '2' => self::getRatingArray($starStat->two_star_count, $total),
+                '3' => self::getRatingArray($starStat->three_star_count, $total),
+                '4' => self::getRatingArray($starStat->four_star_count, $total),
+                '5' => self::getRatingArray($starStat->five_star_count, $total),
 
             ],
         ];
-
-        return $ratings;
     }
 
     public static function rate($value, $userId, $starable)
@@ -85,12 +81,13 @@ class Star
     public static function insertStats($where, $value)
     {
         $countOne = [
+            ['_'],
             ['one_star_count' => 1],
             ['two_star_count' => 1],
             ['three_star_count' => 1],
             ['four_star_count' => 1],
             ['five_star_count' => 1],
-        ][$value];
+        ][(int) $value];
 
         $data = [
             'avg_value' => $value,
@@ -108,12 +105,13 @@ class Star
     public static function updateStats($where, $value)
     {
         $increment = [
+            ['_'],
             ['one_star_count' => DB::raw('one_star_count + 1')],
             ['two_star_count' => DB::raw('two_star_count + 1')],
             ['three_star_count' => DB::raw('three_star_count + 1')],
             ['four_star_count' => DB::raw('four_star_count + 1')],
             ['five_star_count' => DB::raw('five_star_count + 1')],
-        ][$value];
+        ][(int) $value];
 
         $data = [
             'avg_value' => DB::table('stars')->where($where)->avg('rating'),
@@ -121,7 +119,7 @@ class Star
         ] + $increment;
 
 
-        DB::table('star_stats')->where($where)->update($data);
+        self::starStatTable()->where($where)->update($data);
     }
 
     public static function updateStar($where, $user, $rating)
@@ -135,5 +133,10 @@ class Star
             'starable_id' => $starable->getKey(),
             'starable_type' => $starable->getTable(),
         ];
+    }
+
+    private static function starStatTable()
+    {
+        return DB::table('star_stats');
     }
 }
