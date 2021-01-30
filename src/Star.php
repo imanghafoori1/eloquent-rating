@@ -4,14 +4,13 @@ namespace Imanghafoori\Stars;
 
 use App\CoursesModule\Models\Course;
 use App\User;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
 class Star
 {
-    public static function getStarCount($starable)
+    public static function getStarCount($starable, $starType = '_')
     {
-        $where = self::getWhere($starable);
+        $where = self::getWhere($starable, $starType);
 
         return self::starStatTable()
             ->select('star_count')
@@ -19,9 +18,9 @@ class Star
             ->value('star_count');
     }
 
-    public static function getAvgRating($starable)
+    public static function getAvgRating($starable, $starType = '_')
     {
-        $where = self::getWhere($starable);
+        $where = self::getWhere($starable, $starType);
 
         return self::starStatTable()
             ->select('avg_value')
@@ -39,9 +38,9 @@ class Star
         ];
     }
 
-    public static function get_ratings($starable)
+    public static function get_ratings($starable, $starType = '_')
     {
-        $starStat = self::starStatTable()->where(self::getWhere($starable))->first();
+        $starStat = self::starStatTable()->where(self::getWhere($starable, $starType))->first();
         $total = $starStat->star_count;
 
         return [
@@ -58,9 +57,9 @@ class Star
         ];
     }
 
-    public static function rate($value, $userId, $starable)
+    public static function rate($value, $userId, $starable, $starType = '_')
     {
-        $where = self::getWhere($starable);
+        $where = self::getWhere($starable, $starType);
 
         $user = ['user_id' => $userId];
         $rating = ['value' => $value];
@@ -127,11 +126,12 @@ class Star
         DB::table('stars')->where($where + $user)->update($rating);
     }
 
-    public static function getWhere($starable)
+    public static function getWhere($starable, $starType)
     {
         return [
             'starable_id' => $starable->getKey(),
             'starable_type' => $starable->getTable(),
+            'star_type' => $starType,
         ];
     }
 
