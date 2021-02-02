@@ -90,7 +90,7 @@ class Star
             'star_count' => 1,
         ] + $where + $countOne;
 
-        DB::table('star_stats')->insert($data);
+        self::starStatTable()->insert($data);
     }
 
     private static function insertStar($where, $user, $rating)
