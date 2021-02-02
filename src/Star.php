@@ -98,7 +98,7 @@ class Star
         DB::table('stars')->insert($where + $user + $rating);
     }
 
-    public static function updateStats($where, $value)
+    private static function updateStats($where, $value)
     {
         $increment = [
             ['_'],
@@ -118,7 +118,7 @@ class Star
         self::starStatTable()->where($where)->update($data);
     }
 
-    public static function updateStar($where, $user, $rating)
+    private static function updateStar($where, $user, $rating)
     {
         DB::table('stars')->where($where + $user)->update($rating);
     }
