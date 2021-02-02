@@ -2,8 +2,6 @@
 
 namespace Imanghafoori\Stars;
 
-use App\CoursesModule\Models\Course;
-use App\User;
 use Illuminate\Support\Facades\DB;
 
 class Star
@@ -38,7 +36,7 @@ class Star
         ];
     }
 
-    public static function get_ratings($starable, $starType = '_')
+    public static function getRatings($starable, $starType = '_')
     {
         $starStat = self::starStatTable()->where(self::getWhere($starable, $starType))->first();
         $total = $starStat->star_count;
@@ -52,12 +50,11 @@ class Star
                 '3' => self::getRatingArray($starStat->three_star_count, $total),
                 '4' => self::getRatingArray($starStat->four_star_count, $total),
                 '5' => self::getRatingArray($starStat->five_star_count, $total),
-
             ],
         ];
     }
 
-    public static function rate($value, $userId, $starable, $starType = '_')
+    public static function star($value, $userId, $starable, $starType = '_')
     {
         $where = self::getWhere($starable, $starType);
 
@@ -77,7 +74,7 @@ class Star
         DB::commit();
     }
 
-    public static function insertStats($where, $value)
+    private static function insertStats($where, $value)
     {
         $countOne = [
             ['_'],
@@ -96,7 +93,7 @@ class Star
         DB::table('star_stats')->insert($data);
     }
 
-    public static function insertStar($where, $user, $rating)
+    private static function insertStar($where, $user, $rating)
     {
         DB::table('stars')->insert($where + $user + $rating);
     }
@@ -126,7 +123,7 @@ class Star
         DB::table('stars')->where($where + $user)->update($rating);
     }
 
-    public static function getWhere($starable, $starType)
+    private static function getWhere($starable, $starType)
     {
         return [
             'starable_id' => $starable->getKey(),
