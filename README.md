@@ -52,3 +52,9 @@ If you discover any security-related issues, please email `imanghafoori1@gmail.c
 
 - https://github.com/imanghafoori1/laravel-heyman
 
+
+### Laravel Microscope
+
+:gem: It automatically find bugs in your laravel app
+
+- https://github.com/imanghafoori1/laravel-microscope
