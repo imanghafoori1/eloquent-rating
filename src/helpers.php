@@ -1,14 +1,14 @@
 <?php
 
 if (! function_exists('getStarCount')) {
-    function getStarCount($starable) {
-        return Imanghafoori\Stars\Star::getStarCount($starable);
+    function getStarCount($starable, $starType = '_') {
+        return Imanghafoori\Stars\Star::getStarCount($starable, $starType = '_');
     }
 }
 
 if (! function_exists('getAvgRating')) {
-    function getAvgRating($starable) {
-        return Imanghafoori\Stars\Star::getAvgRating($starable);
+    function getAvgRating($starable, $starType = '_') {
+        return Imanghafoori\Stars\Star::getAvgRating($starable, $starType = '_');
     }
 }
 
@@ -18,14 +18,14 @@ if (! function_exists('getRatingArray')) {
     }
 }
 
-if (! function_exists('get_ratings')) {
-    function getRatings($starable) {
-        return Imanghafoori\Stars\Star::getRatings($starable);
+if (! function_exists('getRatings')) {
+    function getRatings($starable, $starType = '_') {
+        return Imanghafoori\Stars\Star::getRatings($starable, $starType = '_');
     }
 }
 
-if (! function_exists('rate')) {
-    function rate($value, $userId, $starable) {
-        Imanghafoori\Stars\Star::rate($value, $userId, $starable);
+if (! function_exists('star')) {
+    function star($value, $userId, $starable, $starType = '_') {
+        Imanghafoori\Stars\Star::star($value, $userId, $starable, $starType = '_');
     }
 }
