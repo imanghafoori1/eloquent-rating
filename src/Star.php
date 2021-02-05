@@ -28,11 +28,11 @@ class Star
 
     private static function getRatingArray($starCount, $total)
     {
-        $percent =  (100 * $starCount) / $total;
+        $percent = (100 * $starCount) / $total;
 
         return [
             'count' => $starCount,
-            'percent' => number_format($percent, config('stars.percent_decimal_count' , 0)),
+            'percent' => number_format($percent, config('stars.percent_decimal_count', 0)),
         ];
     }
 
@@ -113,7 +113,6 @@ class Star
             'avg_value' => DB::table('stars')->where($where)->avg('rating'),
             'star_count' => DB::raw('star_count + 1'),
         ] + $increment;
-
 
         self::starStatTable()->where($where)->update($data);
     }

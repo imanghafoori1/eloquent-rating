@@ -8,7 +8,7 @@ class CreateStaringTables extends Migration
 {
     public function up()
     {
-        Schema::create('stars', function(Blueprint $table) {
+        Schema::create('stars', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('starable_id');
             $table->string('starable_type', 35);
@@ -19,7 +19,7 @@ class CreateStaringTables extends Migration
             $table->index(['starable_id', 'starable_type', 'user_id', 'star_type']);
         });
 
-        Schema::create('star_stats', function(Blueprint $table) {
+        Schema::create('star_stats', function (Blueprint $table) {
             $table->bigIncrements('id');
 
             $table->unsignedBigInteger('starable_id');

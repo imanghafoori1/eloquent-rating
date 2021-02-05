@@ -19,7 +19,7 @@ class EloquentStarsServiceProvider extends ServiceProvider
             ]);
         }
 
-        $this->mergeConfigFrom(__DIR__. '/../config/stars.php', 'star');
-        $this->loadMigrationsFrom(__DIR__. '/../migrations');
+        $this->mergeConfigFrom(__DIR__.'/../config/stars.php', 'star');
+        $this->loadMigrationsFrom(__DIR__.'/../migrations');
     }
 }

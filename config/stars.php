@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'percent_decimal_count' => 1
+    'percent_decimal_count' => 1,
 ];
