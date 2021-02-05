@@ -20,7 +20,7 @@ if (! function_exists('getRatingArray')) {
 
 if (! function_exists('get_ratings')) {
     function getRatings($starable) {
-        return Imanghafoori\Stars\Star::get_ratings($starable);
+        return Imanghafoori\Stars\Star::getRatings($starable);
     }
 }
 
