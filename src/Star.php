@@ -59,9 +59,9 @@ class Star
         $where = self::getWhere($starable, $starType);
 
         $user = ['user_id' => $userId];
-        $rating = [	
-            'value' => $value,	
-            'created_at' => now()	
+        $rating = [
+            'value' => $value,
+            'created_at' => now(),
         ];
 
         $has = DB::table('stars')->where($where + $user)->exists();
